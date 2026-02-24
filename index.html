@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="nl">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <meta name="theme-color" content="#0b0f17" />
+  <meta name="description" content="RigPins — tech setups, 3D print corners, homelabs en dashboards. Scroll, save, inspire." />
+
+  <title>RigPins</title>
+
+  <link rel="manifest" href="/manifest.webmanifest">
+  <link rel="icon" href="/icons/icon-192.png">
+  <link rel="apple-touch-icon" href="/icons/icon-192.png">
+
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand" role="banner">
+      <span class="logo">⚡</span>
+      <div class="brand-text">
+        <div class="name">RigPins</div>
+        <div class="tagline">desk setups • 3D prints • homelabs</div>
+      </div>
+    </div>
+
+    <div class="controls">
+      <input id="q" class="search" placeholder="Zoek: ‘Kobra’, ‘homelab’, ‘minimal’…" />
+      <select id="filter" class="select" aria-label="Categorie filter">
+        <option value="all">Alles</option>
+        <option value="desk">Desk</option>
+        <option value="3d">3D Printing</option>
+        <option value="gaming">Gaming</option>
+        <option value="homelab">Homelab</option>
+        <option value="dashboard">Dashboards</option>
+      </select>
+
+      <button id="installBtn" class="btn btn-ghost" style="display:none;">Install</button>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <section class="notice">
+      <span class="dot"></span>
+      <span>V1 is live. Later: accounts, saves, submit.</span>
+    </section>
+
+    <section class="ad-slot" aria-label="advertentie">
+      <div class="ad-inner">Ad slot (later: AdSense/Ezoic)</div>
+    </section>
+
+    <section id="grid" class="grid" aria-label="pins grid"></section>
+
+    <section class="ad-slot" aria-label="advertentie">
+      <div class="ad-inner">Ad slot (later: AdSense/Ezoic)</div>
+    </section>
+  </main>
+
+  <!-- Detail modal -->
+  <div id="modal" class="modal" aria-hidden="true">
+    <div class="modal-backdrop" data-close="1"></div>
+    <div class="modal-card" role="dialog" aria-modal="true" aria-label="Pin details">
+      <button class="modal-close" data-close="1" aria-label="Sluiten">✕</button>
+
+      <div class="modal-body">
+        <div class="modal-media">
+          <img id="mImg" alt="" />
+        </div>
+
+        <div class="modal-info">
+          <div class="kicker" id="mCat"></div>
+          <h2 id="mTitle"></h2>
+          <p id="mDesc" class="muted"></p>
+
+          <div id="mTags" class="tags"></div>
+
+          <h3>Gear</h3>
+          <ul id="mGear" class="gear"></ul>
+
+          <div class="actions">
+            <a id="mSource" class="btn" target="_blank" rel="noopener">Source</a>
+            <button id="mCopy" class="btn btn-ghost">Copy link</button>
+          </div>
+
+          <p class="tiny muted">
+            Tip: als je ‘m installeert werkt RigPins als app (PWA).
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>

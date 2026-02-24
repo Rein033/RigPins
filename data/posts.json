@@ -1,0 +1,44 @@
+[
+  {
+    "id": "desk-001",
+    "title": "Minimal dual-monitor desk",
+    "category": "desk",
+    "image": "https://images.unsplash.com/photo-1522199710521-72d69614c702?auto=format&fit=crop&w=1400&q=80",
+    "description": "Clean desk met monitor arm en strak cable management.",
+    "tags": ["minimal", "dual monitor", "cable management"],
+    "gear": [
+      {"name": "Monitor arm", "url": ""},
+      {"name": "Mechanical keyboard", "url": ""},
+      {"name": "Desk mat", "url": ""}
+    ],
+    "sourceUrl": "https://unsplash.com/"
+  },
+  {
+    "id": "print-001",
+    "title": "3D print corner — PLA workhorse",
+    "category": "3d",
+    "image": "https://images.unsplash.com/photo-1581092334651-ddf26d9a09d0?auto=format&fit=crop&w=1400&q=80",
+    "description": "Praktische hoek met tools, filament storage en work surface.",
+    "tags": ["3D printing", "PLA", "maker"],
+    "gear": [
+      {"name": "3D printer", "url": ""},
+      {"name": "Filament storage", "url": ""},
+      {"name": "Calipers", "url": ""}
+    ],
+    "sourceUrl": "https://unsplash.com/"
+  },
+  {
+    "id": "lab-001",
+    "title": "Homelab rack starter",
+    "category": "homelab",
+    "image": "https://images.unsplash.com/photo-1551703599-6b3e8379aa8d?auto=format&fit=crop&w=1400&q=80",
+    "description": "Router + switch + mini servers. Small but serious.",
+    "tags": ["homelab", "network", "rack"],
+    "gear": [
+      {"name": "Managed switch", "url": ""},
+      {"name": "Mini PC server", "url": ""},
+      {"name": "Patch panel", "url": ""}
+    ],
+    "sourceUrl": "https://unsplash.com/"
+  }
+]
