@@ -59,6 +59,8 @@ body{
 }
 
 .wrap{max-width:1200px; margin:0 auto; padding:16px}
+/* leave space for bottom nav on small screens */
+.wrap{padding-bottom:96px}
 
 .notice{
   display:flex; align-items:center; gap:10px;
@@ -77,15 +79,34 @@ body{
 
 .ad-slot{
   margin:14px 0 18px;
-  border:1px dashed rgba(255,255,255,.18);
+  border:1px dashed rgba(255,255,255,.12);
   border-radius:var(--radius);
-  background:rgba(255,255,255,.03);
+  background:linear-gradient(180deg, rgba(255,255,255,.02), rgba(255,255,255,.01));
+  overflow:hidden;
 }
 .ad-inner{
-  padding:14px;
-  color:rgba(231,237,245,.75);
+  padding:12px 14px;
+  color:rgba(231,237,245,.78);
   font-size:13px;
   text-align:center;
+  display:flex; flex-direction:column; gap:8px; align-items:center; justify-content:center;
+}
+
+.ad-meta{width:100%; display:flex; justify-content:flex-end}
+.ad-chip{font-size:11px; padding:4px 8px; border-radius:999px; background:rgba(125,211,252,.06); color:var(--accent); border:1px solid rgba(125,211,252,.12)}
+.ad-content{color:var(--muted); font-size:13px}
+
+/* In-grid ad card matching pin look but visually distinct */
+.ad-pin{break-inside:avoid; margin:0 0 14px; border-radius:var(--radius); overflow:hidden}
+.ad-pin .ad-card{background:linear-gradient(180deg, rgba(255,255,255,.02), rgba(255,255,255,.01)); padding:8px; display:flex; flex-direction:column; gap:8px}
+.ad-pin .ad-art{height:160px; background:linear-gradient(90deg, rgba(125,211,252,.06), rgba(167,139,250,.04)); border-radius:12px}
+.ad-pin .ad-label{font-size:12px; color:var(--accent); font-weight:700}
+.ad-pin .ad-cta{margin-top:6px; align-self:flex-start; padding:8px 10px; border-radius:10px; background:rgba(125,211,252,.08); color:var(--text); border:1px solid rgba(125,211,252,.12)}
+
+/* Make sure ads aren't intrusive on small viewports */
+@media (max-width:520px){
+  .ad-inner{padding:10px}
+  .ad-pin .ad-art{height:140px}
 }
 
 .grid{
@@ -178,4 +199,39 @@ body{
 .btn-ghost{
   border:1px solid var(--line);
   background:rgba(255,255,255,.04);
+}
+
+/* App-like UI additions */
+.hamburger{
+  background:transparent; border:1px solid var(--line); color:var(--text);
+  padding:8px 10px; border-radius:10px; cursor:pointer; font-size:18px;
+}
+.profile-btn{display:inline-flex; align-items:center}
+
+.fab{
+  position:fixed; right:18px; bottom:78px; z-index:90;
+  width:56px; height:56px; border-radius:50%;
+  background:linear-gradient(180deg,var(--accent),#5cc8ff);
+  color:#06121a; border:none; font-size:28px; display:inline-flex;
+  align-items:center; justify-content:center; box-shadow:0 12px 30px rgba(11,15,23,.5);
+  cursor:pointer; transition:transform .12s ease, box-shadow .12s ease;
+}
+.fab:active{transform:scale(.98)}
+
+.bottom-nav{
+  position:fixed; left:12px; right:12px; bottom:12px; height:56px;
+  background:rgba(11,15,23,.92); border-radius:14px; display:flex;
+  gap:6px; align-items:center; justify-content:space-around; z-index:80;
+  border:1px solid var(--line); padding:6px 12px;
+  box-shadow: 0 8px 30px rgba(0,0,0,.35);
+}
+.bottom-nav .nav-item{
+  flex:1; background:transparent; color:var(--muted); border:none; padding:8px 6px;
+  border-radius:10px; cursor:pointer; font-weight:700;
+}
+.bottom-nav .nav-item.active{ background:rgba(125,211,252,.08); color:var(--text) }
+
+@media (min-width:900px){
+  .fab{display:none}
+  .bottom-nav{display:none}
 }

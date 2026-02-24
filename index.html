@@ -16,6 +16,10 @@
 </head>
 <body>
   <header class="topbar">
+    <div class="topbar-left">
+      <button id="menuBtn" class="hamburger" aria-label="Menu">☰</button>
+    </div>
+
     <div class="brand" role="banner">
       <span class="logo">⚡</span>
       <div class="brand-text">
@@ -36,6 +40,8 @@
       </select>
 
       <button id="installBtn" class="btn btn-ghost" style="display:none;">Install</button>
+
+      <a id="accountBtn" class="btn btn-ghost profile-btn" href="/login.html">Account</a>
     </div>
   </header>
 
@@ -45,14 +51,20 @@
       <span>V1 is live. Later: accounts, saves, submit.</span>
     </section>
 
-    <section class="ad-slot" aria-label="advertentie">
-      <div class="ad-inner">Ad slot (later: AdSense/Ezoic)</div>
+    <section class="ad-slot" role="complementary" aria-label="advertentie" data-ad-slot="top">
+      <div class="ad-inner" data-ad-placeholder>
+        <div class="ad-meta"><span class="ad-chip">Promoted</span></div>
+        <div class="ad-content">Ad slot — non-intrusive placeholder (loads when visible)</div>
+      </div>
     </section>
 
     <section id="grid" class="grid" aria-label="pins grid"></section>
 
-    <section class="ad-slot" aria-label="advertentie">
-      <div class="ad-inner">Ad slot (later: AdSense/Ezoic)</div>
+    <section class="ad-slot" role="complementary" aria-label="advertentie" data-ad-slot="bottom">
+      <div class="ad-inner" data-ad-placeholder>
+        <div class="ad-meta"><span class="ad-chip">Promoted</span></div>
+        <div class="ad-content">Ad slot — non-intrusive placeholder (loads when visible)</div>
+      </div>
     </section>
   </main>
 
@@ -91,5 +103,16 @@
   </div>
 
   <script src="app.js"></script>
+
+  <!-- Floating action button (app-like) -->
+  <button id="fab" class="fab" aria-label="Upload">＋</button>
+
+  <!-- Bottom navigation to feel like a native app -->
+  <nav class="bottom-nav" role="navigation" aria-label="Primary">
+    <button class="nav-item active" data-target="home">Home</button>
+    <button class="nav-item" data-target="explore">Explore</button>
+    <button class="nav-item" data-target="saved">Saved</button>
+    <button class="nav-item" data-target="profile">Profile</button>
+  </nav>
 </body>
 </html>

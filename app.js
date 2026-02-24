@@ -2,6 +2,9 @@ const grid = document.getElementById("grid");
 const q = document.getElementById("q");
 const filter = document.getElementById("filter");
 const installBtn = document.getElementById("installBtn");
+const fab = document.getElementById("fab");
+const menuBtn = document.getElementById("menuBtn");
+const bottomNav = document.querySelectorAll(".bottom-nav .nav-item");
 
 const modal = document.getElementById("modal");
 const mImg = document.getElementById("mImg");
@@ -33,7 +36,7 @@ function niceCat(c){
 
 function renderPins(list){
   grid.innerHTML = "";
-  list.forEach(p => {
+  list.forEach((p, idx) => {
     const el = document.createElement("article");
     el.className = "pin";
     el.dataset.id = p.id;
@@ -50,7 +53,56 @@ function renderPins(list){
     `;
     el.addEventListener("click", () => openModal(p));
     grid.appendChild(el);
+
+    // Insert an in-grid ad placeholder every 8 items (non-intrusive)
+    if ((idx + 1) % 8 === 0) {
+      const adEl = document.createElement("article");
+      adEl.className = "pin ad-pin";
+      adEl.setAttribute('aria-hidden', 'false');
+      adEl.innerHTML = `
+        <div class="ad-card" data-ad-inline>
+          <div class="ad-label">Promoted</div>
+          <div class="ad-art" aria-hidden="true"></div>
+          <div class="ad-body" style="display:flex;align-items:center;justify-content:space-between;width:100%">
+            <div class="ad-text" style="color:var(--muted);font-size:13px">Advertentie — niet-opdringerig</div>
+            <a class="ad-cta" href="#" role="link" aria-label="Sponsor link">Meer</a>
+          </div>
+        </div>
+      `;
+      grid.appendChild(adEl);
+    }
   });
+}
+
+// Lazy-load ad placeholders when visible to avoid layout jank and unnecessary requests
+function initAds(){
+  if (!('IntersectionObserver' in window)) return;
+  const observer = new IntersectionObserver((entries, obs) => {
+    entries.forEach(entry => {
+      if (!entry.isIntersecting) return;
+      const el = entry.target;
+      if (el.dataset.adLoaded) return;
+      // mark loaded to avoid re-inserting
+      el.dataset.adLoaded = '1';
+
+      // For slot ads (.ad-inner) insert lightweight content; real ad networks insert scripts/iframes here.
+      if (el.matches('.ad-inner') || el.querySelector('[data-ad-placeholder]')){
+        const inner = el.querySelector('[data-ad-placeholder]') || el;
+        if (inner) inner.innerHTML = `<div class="ad-meta"><span class="ad-chip">Promoted</span></div><div class="ad-content">Advertentie voorbeeld — plaats jouw advertentie hier.</div>`;
+      }
+
+      // For inline ad cards, we could swap in a real creative (image/iframe). For now, simply reveal the art area.
+      if (el.classList && el.classList.contains('ad-pin')){
+        const art = el.querySelector('.ad-art');
+        if (art) art.style.background = 'linear-gradient(90deg, rgba(125,211,252,.15), rgba(167,139,250,.08))';
+      }
+
+      obs.unobserve(el);
+    });
+  }, { rootMargin: '200px 0px' });
+
+  // Observe static ad slots and any inline ad cards
+  document.querySelectorAll('.ad-inner, .ad-pin').forEach(node => observer.observe(node));
 }
 
 function applyFilters(){
@@ -162,9 +214,36 @@ installBtn.addEventListener("click", async () => {
 async function registerSW(){
   if (!("serviceWorker" in navigator)) return;
   try{
-    await navigator.serviceWorker.register("/sw.js");
+    const reg = await navigator.serviceWorker.register("/sw.js");
+
+    // If there's an updated service worker waiting, prompt the user
+    if (reg.waiting) {
+      promptUserToRefresh(reg);
+    }
+
+    reg.addEventListener('updatefound', () => {
+      const installing = reg.installing;
+      installing.addEventListener('statechange', () => {
+        if (installing.state === 'installed' && navigator.serviceWorker.controller) {
+          promptUserToRefresh(reg);
+        }
+      });
+    });
+    // Listen for controllerchange to reload page after skipWaiting
+    navigator.serviceWorker.addEventListener('controllerchange', () => {
+      window.location.reload();
+    });
   }catch(e){
     // geen paniek
+  }
+}
+
+function promptUserToRefresh(reg){
+  // Simple confirm UX; replace with nicer banner in the future
+  const shouldRefresh = confirm('Er is een update beschikbaar. Pagina verversen om te updaten?');
+  if (!shouldRefresh) return;
+  if (reg.waiting) {
+    reg.waiting.postMessage({ type: 'SKIP_WAITING' });
   }
 }
 
@@ -180,6 +259,35 @@ async function init(){
     const id = decodeURIComponent(location.hash.slice(1));
     const p = posts.find(x => x.id === id);
     if (p) openModal(p);
+  }
+
+  // FAB opens upload or account (placeholder)
+  if (fab){
+    fab.addEventListener("click", () => {
+      // In the future this will open the upload flow. For now, forward to login.
+      location.href = "/login.html";
+    });
+  }
+
+  // simple hamburger hint (toggle minimal menu state)
+  if (menuBtn){
+    menuBtn.addEventListener("click", () => {
+      alert("Menu: future navigation (saved, uploads, settings)");
+    });
+  }
+
+  // bottom nav behavior
+  if (bottomNav && bottomNav.length){
+    bottomNav.forEach(btn => btn.addEventListener("click", (e)=>{
+      bottomNav.forEach(x=>x.classList.remove("active"));
+      e.currentTarget.classList.add("active");
+      const t = e.currentTarget.dataset.target;
+      // simple actions: scroll to top for home, focus search for explore, open saved placeholder
+      if (t === "home") window.scrollTo({top:0, behavior:"smooth"});
+      if (t === "explore") q.focus();
+      if (t === "saved") alert("Saved: feature coming soon.");
+      if (t === "profile") location.href = "/login.html";
+    }));
   }
 }
 
